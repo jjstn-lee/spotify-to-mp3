@@ -10,8 +10,10 @@ import os
 
 load_dotenv()
 
+# grab env variables from .env file
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
+spotify_id = os.getenv("SPOTIFY_ID")
 
 print(f"client_id: {client_id}")
 print(f"client_secret: {client_secret}")
@@ -39,7 +41,21 @@ token = get_token()
 def get_auth_header(token):
     return {"Authorization": "Bearer " + token}
 
-print(token)
+def get_user_playlists(token, spotify_id):
+    url = "https://api.spotify.com/v1/users/"
+    headers = get_auth_header(token)
+    query = f"{spotify_id}/playlists"
+
+    query_url = url + query
+    result = requests.get(query_url, headers=headers)
+    json_result = json.loads(result.content)
+    print(json_result)
+
+# print(token)
+
+get_user_playlists(token, spotify_id)
+
+
 
 # youtube API?
 # take every song on the playlist and look it up on youtube, append it to yt_links (LIST)
